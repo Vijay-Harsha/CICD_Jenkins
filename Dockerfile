@@ -1,19 +1,22 @@
-# Use latest CentOS Stream image
-FROM quay.io/centos/centos:stream9
 
-# Maintainer info
-LABEL maintainer="Vijay"
+FROM centos
+RUN yum install java -y
+RUN mkdir /opt/tomcat/
+WORKDIR /opt/
+ADD https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.54/bin/apache-tomcat-9.0.54.tar.gz /opt/tomcat
+RUN tar xvfz apache*.tar.gz
+RUN mv apache-tomcat-9.0.54/* /opt/tomcat 
+EXPOSE 8080
+CMD ["/opt/tomcat/bin/catalina.sh", "run"]
 
-# Update packages and install nginx
-RUN dnf -y update && \
-    dnf -y install nginx && \
-    dnf clean all
 
-# Create sample web page
-RUN echo "<h1>Welcome to Jenkins Docker CI/CD Project</h1>" > /usr/share/nginx/html/index.html
-
-# Expose nginx port
-EXPOSE 80 443
-
-# Start nginx in foreground
-CMD ["nginx", "-g", "daemon off;"]
+FROM redhat/ubi9:latest
+RUN yum install java -y
+RUN mkdir /opt/tomcat/
+WORKDIR /opt/tomcat
+ADD https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.91/bin/apache-tomcat-9.0.91.tar.gz /opt/tomcat
+RUN tar xvfz apache-tomcat-9.0.91.tar.gz
+RUN mv apache-tomcat-9.0.91 tomcat9
+RUN mv tomcat9 /opt
+EXPOSE 8080
+CMD ["/opt/tomcat/bin/catalina.sh", "run"]
