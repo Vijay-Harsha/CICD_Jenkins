@@ -13,7 +13,7 @@ RUN dnf -y update && \
 RUN echo "<h1>Welcome to Jenkins Docker CI/CD Project</h1>" > /usr/share/nginx/html/index.html
 
 # Expose nginx port
-EXPOSE 80
+EXPOSE 80 443
 
 # Start nginx in foreground
 CMD ["nginx", "-g", "daemon off;"]
