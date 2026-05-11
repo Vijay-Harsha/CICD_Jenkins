@@ -2,7 +2,7 @@ FROM registry.access.redhat.com/ubi10/ubi:latest
 
 LABEL maintainer="Vijay"
 
-# Install Java 21 and utilities
+# Install Java and required tools
 RUN dnf install -y \
     java-21-openjdk \
     wget \
@@ -10,11 +10,11 @@ RUN dnf install -y \
     gzip && \
     dnf clean all
 
-# Set Tomcat version
-ENV TOMCAT_VERSION=10.1.41
+# Tomcat version
+ENV TOMCAT_VERSION=10.1.39
 
 # Download and install Tomcat
-RUN wget https://downloads.apache.org/tomcat/tomcat-10/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
+RUN wget https://archive.apache.org/dist/tomcat/tomcat-10/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
     tar -xzf apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
     mv apache-tomcat-${TOMCAT_VERSION} /opt/tomcat && \
     rm -f apache-tomcat-${TOMCAT_VERSION}.tar.gz
