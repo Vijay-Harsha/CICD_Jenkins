@@ -9,12 +9,3 @@ RUN mv tomcat9 /opt
 EXPOSE 80
 CMD ["/opt/tomcat/bin/catalina.sh", "run"]
 
-FROM centos
-RUN yum install java -y
-RUN mkdir /opt/tomcat/
-WORKDIR /opt/
-ADD https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.54/bin/apache-tomcat-9.0.54.tar.gz /opt/tomcat
-RUN tar xvfz apache*.tar.gz
-RUN mv apache-tomcat-9.0.54/* /opt/tomcat
-EXPOSE 80
-CMD ["/opt/tomcat/bin/catalina.sh", "run"]
