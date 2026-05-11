@@ -1,11 +1,28 @@
-FROM redhat/ubi9:latest
-RUN yum install java -y
-RUN mkdir /opt/tomcat/
-WORKDIR /opt/tomcat
-ADD https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.91/bin/apache-tomcat-9.0.91.tar.gz /opt/tomcat
-RUN tar xvfz apache-tomcat-9.0.91.tar.gz
-RUN mv apache-tomcat-9.0.91 tomcat9
-RUN mv tomcat9 /opt
-EXPOSE 80
-CMD ["/opt/tomcat/bin/catalina.sh", "run"]
+# Use Red Hat Universal Base Image 10
+FROM registry.access.redhat.com/ubi10/ubi:latest
 
+# Maintainer
+LABEL maintainer="Vijay"
+
+# Install Java, wget and tar
+RUN dnf install -y java-17-openjdk wget tar gzip && \
+    dnf clean all
+
+# Set Tomcat version
+ENV TOMCAT_VERSION=10.1.41
+
+# Download and extract Tomcat
+RUN wget https://downloads.apache.org/tomcat/tomcat-10/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
+    tar -xzf apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
+    mv apache-tomcat-${TOMCAT_VERSION} /opt/tomcat && \
+    rm -f apache-tomcat-${TOMCAT_VERSION}.tar.gz
+
+# Set environment variables
+ENV CATALINA_HOME=/opt/tomcat
+ENV PATH=$PATH:$CATALINA_HOME/bin
+
+# Expose Tomcat port
+EXPOSE 8080
+
+# Start Tomcat
+CMD ["/opt/tomcat/bin/catalina.sh", "run"]
