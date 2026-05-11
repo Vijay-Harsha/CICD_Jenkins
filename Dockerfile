@@ -6,7 +6,7 @@ ADD https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.91/bin/apache-tomcat-9.0.91.ta
 RUN tar xvfz apache-tomcat-9.0.91.tar.gz
 RUN mv apache-tomcat-9.0.91 tomcat9
 RUN mv tomcat9 /opt
-EXPOSE 80
+EXPOSE 8080
 CMD ["/opt/tomcat/bin/catalina.sh", "run"]
 
 FROM centos
