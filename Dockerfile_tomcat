@@ -1,19 +1,23 @@
-FROM eclipse-temurin:21-jre-alpine
+FROM registry.access.redhat.com/ubi10/ubi:latest
 
 LABEL maintainer="Vijay"
+
+# Install Java and required tools
+RUN dnf install -y \
+    java-21-openjdk \
+    wget \
+    tar \
+    gzip && \
+    dnf clean all
 
 # Tomcat version
 ENV TOMCAT_VERSION=10.1.39
 
-# Install wget and download Tomcat
-RUN apk add --no-cache wget tar && \
-    wget https://archive.apache.org/dist/tomcat/tomcat-10/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
+# Download and install Tomcat
+RUN wget https://archive.apache.org/dist/tomcat/tomcat-10/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
     tar -xzf apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
     mv apache-tomcat-${TOMCAT_VERSION} /opt/tomcat && \
     rm -f apache-tomcat-${TOMCAT_VERSION}.tar.gz
-
-# Remove default apps to reduce size
-RUN rm -rf /opt/tomcat/webapps/*
 
 # Environment variables
 ENV CATALINA_HOME=/opt/tomcat
