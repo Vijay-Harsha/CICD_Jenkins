@@ -21,6 +21,6 @@ ENV PATH=$PATH:$CATALINA_HOME/bin
 
 # Expose Tomcat port
 EXPOSE 80
-
+slave 80
 # Start Tomcat
 CMD ["/opt/tomcat/bin/catalina.sh", "run"]
